@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(caveman:caveman)",
+      "Skill(caveman:caveman:*)",
+      "Bash(xargs ls -la)"
+    ]
+  }
+}
