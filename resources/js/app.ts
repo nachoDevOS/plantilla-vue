@@ -6,8 +6,9 @@ import PublicLayout from '@/layouts/PublicLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { initializeFlashToast } from '@/lib/flashToast';
 
-const configuredAppName = import.meta.env.VITE_APP_NAME || 'Solución Digital';
-const appName = configuredAppName === 'Laravel' ? 'Solución Digital' : configuredAppName;
+const appName = import.meta.env.VITE_APP_NAME && import.meta.env.VITE_APP_NAME !== 'Laravel' 
+    ? import.meta.env.VITE_APP_NAME 
+    : 'Solución Digital';
 
 // Inicializa light / dark mode antes de que monte la app.
 initializeTheme();
