@@ -4,9 +4,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Public\ContactController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
-use Spatie\Permission\Middlewares\RoleMiddleware;
-use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 // Sitio publico
 
@@ -35,6 +35,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     ->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('users', [UserController::class, 'index'])->name('users');
+        Route::get('roles', [\App\Http\Controllers\Admin\RoleController::class, 'index'])->name('roles');
+        Route::get('roles/create', [\App\Http\Controllers\Admin\RoleController::class, 'create'])->name('roles.create');
+        Route::post('roles', [\App\Http\Controllers\Admin\RoleController::class, 'store'])->name('roles.store');
+        Route::get('roles/{role}/edit', [\App\Http\Controllers\Admin\RoleController::class, 'edit'])->name('roles.edit');
+        Route::put('roles/{role}', [\App\Http\Controllers\Admin\RoleController::class, 'update'])->name('roles.update');
+        Route::delete('roles/{role}', [\App\Http\Controllers\Admin\RoleController::class, 'destroy'])->name('roles.destroy');
     });
 
 // Redirige /dashboard a /admin/dashboard por compatibilidad con Fortify.

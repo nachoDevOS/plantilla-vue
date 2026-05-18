@@ -142,6 +142,29 @@ Alli se decide que layout usa cada pagina:
 - `settings/*` usa `AdminLayout` + `SettingsLayout`.
 - El resto usa `AdminLayout`.
 
+## Apariencia
+
+La configuracion de claro/oscuro del admin esta separada del sitio publico.
+
+- Admin y settings usan `appearance_admin`.
+- Sitio publico usa `appearance_public`.
+- `resources/js/app.ts` escucha la navegacion de Inertia y vuelve a aplicar el
+  scope actual al cambiar entre admin y publico.
+- `app/Http/Middleware/HandleAppearance.php` comparte con Blade solo la cookie
+  que corresponde a la zona visitada. La cookie antigua `appearance` queda como
+  fallback solo para admin, no para publico.
+
+## Recarga sin parpadeo
+
+`resources/views/app.blade.php` agrega `app-loading` al `<html>` antes de cargar
+Vue. Mientras esa clase existe, `#app` queda invisible para evitar que se vea
+texto sin estilos al recargar. Cuando Inertia termina de montar,
+`resources/js/app.ts` agrega `app-ready` y quita `app-loading`.
+
+La landing `public/Welcome` agrega tambien `app-landing-loading` para conservar
+su fondo oscuro durante ese instante de carga. Las demas vistas usan el fondo
+normal del tema actual.
+
 ## UI
 
 Los componentes dentro de:

@@ -27,6 +27,6 @@ defineOptions({
             title="Apariencia"
             description="Personaliza el tema de la interfaz"
         />
-        <AppearanceTabs />
+        <AppearanceTabs scope="admin" />
     </div>
 </template>

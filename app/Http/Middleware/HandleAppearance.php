@@ -16,7 +16,18 @@ class HandleAppearance
      */
     public function handle(Request $request, Closure $next): Response
     {
-        View::share('appearance', $request->cookie('appearance') ?? 'system');
+        $isAdminArea = $request->is('admin')
+            || $request->is('admin/*')
+            || $request->is('dashboard')
+            || $request->is('settings/*');
+        $cookieName = $isAdminArea ? 'appearance_admin' : 'appearance_public';
+        $appearance = $request->cookie($cookieName);
+
+        if ($isAdminArea) {
+            $appearance ??= $request->cookie('appearance');
+        }
+
+        View::share('appearance', $appearance ?? 'system');
 
         return $next($request);
     }

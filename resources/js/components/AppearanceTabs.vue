@@ -2,7 +2,8 @@
 import { Monitor, Moon, Sun } from 'lucide-vue-next';
 import { useAppearance } from '@/composables/useAppearance';
 
-const { appearance, updateAppearance } = useAppearance();
+const props = defineProps<{ scope?: string }>();
+const { appearance, updateAppearance } = useAppearance(props.scope);
 
 const tabs = [
     { value: 'light', Icon: Sun, label: 'Claro' },

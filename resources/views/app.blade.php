@@ -8,6 +8,7 @@
         <script>
             (function() {
                 const appearance = '{{ $appearance ?? "system" }}';
+                const component = @js($page['component'] ?? '');
 
                 if (appearance === 'system') {
                     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -17,13 +18,16 @@
                     }
                 }
 
-                @if (($page['component'] ?? null) === 'Welcome')
-                    document.documentElement.classList.add('app-loading');
-                    window.setTimeout(function() {
-                        document.documentElement.classList.add('app-ready');
-                        document.documentElement.classList.remove('app-loading');
-                    }, 3000);
-                @endif
+                document.documentElement.classList.add('app-loading');
+
+                if (component === 'Welcome' || component === 'public/Welcome') {
+                    document.documentElement.classList.add('app-landing-loading');
+                }
+
+                window.setTimeout(function() {
+                    document.documentElement.classList.add('app-ready');
+                    document.documentElement.classList.remove('app-loading', 'app-landing-loading');
+                }, 3000);
             })();
         </script>
 
@@ -37,8 +41,8 @@
                 background-color: oklch(0.145 0 0);
             }
 
-            html.app-loading:not(.app-ready),
-            html.app-loading:not(.app-ready) body {
+            html.app-landing-loading.app-loading:not(.app-ready),
+            html.app-landing-loading.app-loading:not(.app-ready) body {
                 background-color: #0f172a;
             }
 

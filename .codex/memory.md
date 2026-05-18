@@ -106,6 +106,11 @@ return back()->with([
 
 Valid toast types: `success`, `info`, `warning`, `error`.
 
+- Theme/appearance preferences are scoped. Admin/settings pages use
+  `appearance_admin`; public pages use `appearance_public`. Inertia navigation
+  reapplies the current route scope so changing light/dark mode in admin does
+  not leak into the public site.
+
 ## Public Landing
 
 - `/` is a standalone company landing for Solucion Digital in
@@ -198,3 +203,10 @@ When adding a new admin feature, follow this local pattern:
 - 2026-05-16: Changed the public landing `Iniciar sesión` desktop/mobile action
   into a professional modal login form that posts to Fortify `/login`, with
   remember-me and forgot-password access.
+- 2026-05-18: Isolated appearance preferences by route scope so admin
+  light/dark settings are stored/applied as `appearance_admin` and no longer
+  affect public pages, which use `appearance_public`.
+- 2026-05-18: Made the Inertia root app use `app-loading` on every full page
+  load until Vue marks `app-ready`, preventing unstyled black text from
+  flashing during reloads. The dark loading background remains limited to the
+  standalone landing (`public/Welcome`).

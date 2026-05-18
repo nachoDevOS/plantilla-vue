@@ -57,30 +57,30 @@ const statCards = [
             <div
                 v-for="stat in statCards"
                 :key="stat.label"
-                class="flex flex-col gap-2 rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800"
+                class="flex flex-col gap-2 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50"
             >
                 <div class="flex items-start justify-between">
-                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
                         {{ stat.label }}
                     </p>
-                    <component :is="stat.icon" class="h-5 w-5 text-gray-400" />
+                    <component :is="stat.icon" class="h-5 w-5 text-zinc-400" />
                 </div>
-                <p class="text-3xl font-bold text-gray-900 dark:text-white">
+                <p class="text-3xl font-bold text-zinc-900 dark:text-white">
                     {{ stat.value }}
                 </p>
-                <p class="text-xs text-gray-400 dark:text-gray-500">
+                <p class="text-xs text-zinc-400 dark:text-zinc-500">
                     {{ stat.description }}
                 </p>
             </div>
         </div>
 
         <!-- Content placeholder -->
-        <div class="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-            <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                <h2 class="font-semibold text-gray-900 dark:text-white">Actividad reciente</h2>
+        <div class="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50">
+            <div class="border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
+                <h2 class="font-semibold text-zinc-900 dark:text-white">Actividad reciente</h2>
             </div>
             <div class="px-6 py-10 text-center">
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">
                     Agrega aquí gráficos, tablas de actividad reciente u otro contenido relevante.
                 </p>
             </div>

@@ -14,12 +14,12 @@ const stack = [
     <Head title="Acerca de" />
 
     <!-- Hero de sección -->
-    <section class="border-b border-gray-200 px-4 py-16 sm:py-24 dark:border-gray-800">
+    <section class="border-b border-zinc-200 px-4 py-16 sm:py-24 dark:border-zinc-800">
         <div class="mx-auto max-w-3xl">
-            <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
+            <h1 class="text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl dark:text-white">
                 Acerca de esta plantilla
             </h1>
-            <p class="mt-6 text-lg leading-relaxed text-gray-600 dark:text-gray-400">
+            <p class="mt-6 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
                 Una plantilla de inicio completa construida con Laravel + Vue 3, diseñada para
                 acelerar el desarrollo de aplicaciones web modernas con panel de administración y
                 sitio público.
@@ -31,8 +31,8 @@ const stack = [
     <section class="px-4 py-16">
         <div class="mx-auto max-w-3xl space-y-8">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">¿Para qué sirve?</h2>
-                <p class="mt-4 leading-relaxed text-gray-600 dark:text-gray-400">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">¿Para qué sirve?</h2>
+                <p class="mt-4 leading-relaxed text-zinc-600 dark:text-zinc-400">
                     Esta plantilla proporciona una base lista para producción que incluye todo lo
                     necesario para empezar un nuevo proyecto: autenticación completa, gestión de
                     usuarios, configuración de perfil, modo oscuro y una arquitectura clara separando
@@ -41,30 +41,30 @@ const stack = [
             </div>
 
             <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Arquitectura</h2>
-                <p class="mt-4 leading-relaxed text-gray-600 dark:text-gray-400">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">Arquitectura</h2>
+                <p class="mt-4 leading-relaxed text-zinc-600 dark:text-zinc-400">
                     El proyecto está dividido en dos secciones bien diferenciadas:
                 </p>
                 <ul class="mt-4 space-y-3">
                     <li class="flex items-start gap-3">
-                        <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs text-white dark:bg-white dark:text-gray-900">
+                        <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-xs text-white dark:bg-white dark:text-zinc-900">
                             1
                         </span>
                         <div>
-                            <strong class="text-gray-900 dark:text-white">Sitio público</strong>
-                            <span class="text-gray-600 dark:text-gray-400">
+                            <strong class="text-zinc-900 dark:text-white">Sitio público</strong>
+                            <span class="text-zinc-600 dark:text-zinc-400">
                                 — accesible por cualquier visitante, con su propio layout (navbar y
                                 footer).
                             </span>
                         </div>
                     </li>
                     <li class="flex items-start gap-3">
-                        <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs text-white dark:bg-white dark:text-gray-900">
+                        <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-xs text-white dark:bg-white dark:text-zinc-900">
                             2
                         </span>
                         <div>
-                            <strong class="text-gray-900 dark:text-white">Panel de administración</strong>
-                            <span class="text-gray-600 dark:text-gray-400">
+                            <strong class="text-zinc-900 dark:text-white">Panel de administración</strong>
+                            <span class="text-zinc-600 dark:text-zinc-400">
                                 — protegido por autenticación, con sidebar de navegación y
                                 breadcrumbs.
                             </span>
@@ -75,17 +75,17 @@ const stack = [
 
             <!-- Stack -->
             <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Stack tecnológico</h2>
-                <div class="mt-6 divide-y divide-gray-200 rounded-xl border border-gray-200 dark:divide-gray-800 dark:border-gray-800">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">Stack tecnológico</h2>
+                <div class="mt-6 divide-y divide-zinc-200 rounded-xl border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
                     <div
                         v-for="item in stack"
                         :key="item.name"
                         class="flex items-start gap-4 px-5 py-4"
                     >
-                        <span class="min-w-[120px] text-sm font-semibold text-gray-900 dark:text-white">
+                        <span class="min-w-[120px] text-sm font-semibold text-zinc-900 dark:text-white">
                             {{ item.name }}
                         </span>
-                        <span class="text-sm text-gray-600 dark:text-gray-400">
+                        <span class="text-sm text-zinc-600 dark:text-zinc-400">
                             {{ item.description }}
                         </span>
                     </div>
