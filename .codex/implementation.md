@@ -40,6 +40,8 @@ La landing tambien incluye efectos dinamicos:
 - Boton `Iniciar sesion` en el menu principal y menu movil. Abre un modal
   profesional en la landing con formulario real hacia `/login`, opcion
   `Recordarme` y enlace a recuperacion de password.
+- Si ya existe una sesion activa, esos accesos muestran `Volver al panel` y
+  enlazan directamente a `/admin/dashboard`.
 
 `resources/js/layouts/PublicLayout.vue` detecta si estas en `/`. Si estas en la
 landing, no agrega navbar/footer extra para evitar duplicados.
@@ -98,16 +100,23 @@ Rutas admin en `routes/web.php`:
 
 - `/admin/dashboard`
 - `/admin/users`
+- `/admin/roles`
+- `/admin/roles/create`
+- `/admin/roles/{role}/edit`
 
 Controladores:
 
 - `app/Http/Controllers/Admin/DashboardController.php`
 - `app/Http/Controllers/Admin/UserController.php`
+- `app/Http/Controllers/Admin/RoleController.php`
 
 Paginas Vue:
 
 - `resources/js/pages/admin/Dashboard.vue`
 - `resources/js/pages/admin/users/Index.vue`
+- `resources/js/pages/admin/roles/Index.vue`
+- `resources/js/pages/admin/roles/Create.vue`
+- `resources/js/pages/admin/roles/Edit.vue`
 
 Layout admin:
 
@@ -142,6 +151,29 @@ php artisan optimize:clear
 
 El usuario inicial `admin@admin.com` debe tener password valido, email verificado
 y rol `admin`.
+
+Fortify redirige despues del login directamente a:
+
+```txt
+/admin/dashboard
+```
+
+Esto evita pasar por el redirect intermedio `/dashboard`.
+
+Las paginas Vue de roles (`resources/js/pages/admin/roles/*`) estan tipadas con
+props explicitas y usan `router` de `@inertiajs/vue3`. No se debe importar
+`Inertia` desde `@inertiajs/vue3`, porque esa exportacion ya no existe en la
+version instalada.
+
+La vista de Roles permite:
+
+- Listar roles y sus permisos.
+- Crear roles con o sin permisos.
+- Editar roles y sincronizar permisos.
+- Eliminar roles, excepto el rol `admin`.
+
+El backend valida que los permisos enviados existan con `guard_name = web` y
+mantiene el rol `admin` protegido porque el panel depende de `role:admin`.
 
 Los componentes de sidebar, menu, navbar/topbar, footer nav, breadcrumbs y menu
 de usuario del admin estan organizados dentro de:

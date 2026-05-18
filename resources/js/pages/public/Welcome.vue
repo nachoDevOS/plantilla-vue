@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import {
     Boxes,
     ChartLine,
@@ -33,7 +33,12 @@ import { Toaster } from '@/components/ui/sonner';
 import { store as loginStore } from '@/routes/login';
 import { request as passwordRequest } from '@/routes/password';
 
-type BusinessCategory = 'restaurant' | 'retail' | 'pharmacy' | 'hardware' | 'vet';
+type BusinessCategory =
+    | 'restaurant'
+    | 'retail'
+    | 'pharmacy'
+    | 'hardware'
+    | 'vet';
 type PortfolioFilter = 'all' | BusinessCategory;
 
 // Estado reactivo de la pagina.
@@ -45,6 +50,9 @@ const selectedFilter = ref<PortfolioFilter>('all');
 const scrollProgress = ref(0);
 const pointerX = ref(0);
 const pointerY = ref(0);
+const page = usePage();
+const isAuthenticated = computed(() => Boolean(page.props.auth?.user));
+const dashboardHref = '/admin/dashboard';
 let revealObserver: IntersectionObserver | null = null;
 
 // useForm es de Inertia. Sirve para enviar datos a Laravel sin recargar la pagina.
@@ -158,23 +166,30 @@ const heroStats = [
 const workflowSteps = [
     {
         title: 'Diagnóstico',
-        description: 'Revisamos ventas, inventario, facturación y tareas manuales.',
+        description:
+            'Revisamos ventas, inventario, facturación y tareas manuales.',
         icon: Sparkles,
     },
     {
         title: 'Implementación',
-        description: 'Configuramos módulos, usuarios, productos y reportes clave.',
+        description:
+            'Configuramos módulos, usuarios, productos y reportes clave.',
         icon: Database,
     },
     {
         title: 'Crecimiento',
-        description: 'Medimos resultados y ajustamos el sistema según tu operación.',
+        description:
+            'Medimos resultados y ajustamos el sistema según tu operación.',
         icon: Gauge,
     },
 ];
 
 // Botones para filtrar los casos de exito.
-const filters: Array<{ label: string; value: PortfolioFilter; icon?: Component }> = [
+const filters: Array<{
+    label: string;
+    value: PortfolioFilter;
+    icon?: Component;
+}> = [
     { label: 'Todos', value: 'all' },
     { label: 'Restaurantes', value: 'restaurant', icon: Utensils },
     { label: 'Comercios', value: 'retail', icon: Store },
@@ -248,22 +263,19 @@ const portfolioItems: Array<{
 // Testimonios de clientes. Son datos estaticos por ahora.
 const testimonials = [
     {
-        quote:
-            'El sistema para nuestro restaurante ha sido revolucionario. Ahora podemos atender más mesas con menos personal y nuestros clientes notan la diferencia en el servicio.',
+        quote: 'El sistema para nuestro restaurante ha sido revolucionario. Ahora podemos atender más mesas con menos personal y nuestros clientes notan la diferencia en el servicio.',
         name: 'Carlos Mendoza',
         role: 'Dueño, Restaurante "La Parrilla"',
         image: 'https://randomuser.me/api/portraits/men/32.jpg',
     },
     {
-        quote:
-            'Desde que implementamos el sistema en nuestra farmacia, hemos reducido las pérdidas por caducidad en un 70% y el tiempo para hacer inventario se redujo de 2 días a 2 horas.',
+        quote: 'Desde que implementamos el sistema en nuestra farmacia, hemos reducido las pérdidas por caducidad en un 70% y el tiempo para hacer inventario se redujo de 2 días a 2 horas.',
         name: 'María Fernández',
         role: 'Gerente, Farmacia "Bienestar"',
         image: 'https://randomuser.me/api/portraits/women/44.jpg',
     },
     {
-        quote:
-            'El punto de venta transformó nuestro negocio. Ahora sabemos qué productos se venden más, en qué horarios y podemos tomar decisiones basadas en datos.',
+        quote: 'El punto de venta transformó nuestro negocio. Ahora sabemos qué productos se venden más, en qué horarios y podemos tomar decisiones basadas en datos.',
         name: 'Roberto Jiménez',
         role: 'Dueño, Minimercado "El Ahorro"',
         image: 'https://randomuser.me/api/portraits/men/75.jpg',
@@ -274,16 +286,20 @@ const testimonials = [
 const filteredPortfolioItems = computed(() =>
     selectedFilter.value === 'all'
         ? portfolioItems
-        : portfolioItems.filter((item) => item.category === selectedFilter.value),
+        : portfolioItems.filter(
+              (item) => item.category === selectedFilter.value,
+          ),
 );
 
 // Cambia el estilo del header cuando el usuario baja la pagina.
 function handleScroll() {
     const scrollTop = window.scrollY;
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
 
     isScrolled.value = scrollTop > 50;
-    scrollProgress.value = scrollable > 0 ? Math.min((scrollTop / scrollable) * 100, 100) : 0;
+    scrollProgress.value =
+        scrollable > 0 ? Math.min((scrollTop / scrollable) * 100, 100) : 0;
 }
 
 function handlePointerMove(event: MouseEvent) {
@@ -337,7 +353,9 @@ function submitLogin() {
 onMounted(() => {
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointermove', handlePointerMove, {
+        passive: true,
+    });
 
     const observer = new IntersectionObserver(
         (entries) => {
@@ -373,7 +391,11 @@ onBeforeUnmount(() => {
             content="Sistemas personalizados para restaurantes, ventas, farmacias, ferreterías, veterinarias y más. Automatiza y optimiza tu negocio con soluciones tecnológicas a medida."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin="anonymous"
+        />
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700;800&display=swap"
             rel="stylesheet"
@@ -382,38 +404,79 @@ onBeforeUnmount(() => {
 
     <div class="landing-page">
         <header :class="{ scrolled: isScrolled }">
-            <div class="scroll-progress" :style="{ width: `${scrollProgress}%` }" aria-hidden="true"></div>
+            <div
+                class="scroll-progress"
+                :style="{ width: `${scrollProgress}%` }"
+                aria-hidden="true"
+            ></div>
             <div class="container">
                 <nav aria-label="Navegación principal">
-                    <button type="button" class="logo-button" @click="scrollToSection('#inicio')">
+                    <button
+                        type="button"
+                        class="logo-button"
+                        @click="scrollToSection('#inicio')"
+                    >
                         Solución <span>Digital</span>
                     </button>
 
                     <ul class="nav-links">
                         <li v-for="link in navLinks" :key="link.href">
-                            <button type="button" @click="scrollToSection(link.href)">
+                            <button
+                                type="button"
+                                @click="scrollToSection(link.href)"
+                            >
                                 {{ link.label }}
                             </button>
                         </li>
                     </ul>
 
                     <div class="nav-actions">
-                        <button type="button" class="btn btn-sm" @click="scrollToSection('#contacto')">
+                        <button
+                            type="button"
+                            class="btn btn-sm"
+                            @click="scrollToSection('#contacto')"
+                        >
                             Contacto
                         </button>
-                        <button type="button" class="login-link login-cta" @click="openLoginModal">
+                        <Link
+                            v-if="isAuthenticated"
+                            :href="dashboardHref"
+                            class="login-link login-cta"
+                        >
+                            Volver al panel
+                        </Link>
+                        <button
+                            v-else
+                            type="button"
+                            class="login-link login-cta"
+                            @click="openLoginModal"
+                        >
                             Iniciar sesión
                         </button>
                     </div>
 
                     <div class="mobile-actions">
-                        <button type="button" class="login-link login-cta" @click="openLoginModal">
+                        <Link
+                            v-if="isAuthenticated"
+                            :href="dashboardHref"
+                            class="login-link login-cta"
+                        >
+                            Volver al panel
+                        </Link>
+                        <button
+                            v-else
+                            type="button"
+                            class="login-link login-cta"
+                            @click="openLoginModal"
+                        >
                             Iniciar sesión
                         </button>
                         <button
                             type="button"
                             class="mobile-menu-button"
-                            :aria-label="mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'"
+                            :aria-label="
+                                mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'
+                            "
                             @click="mobileMenuOpen = !mobileMenuOpen"
                         >
                             <X v-if="mobileMenuOpen" class="icon" />
@@ -431,10 +494,27 @@ onBeforeUnmount(() => {
                     >
                         {{ link.label }}
                     </button>
-                    <button type="button" class="btn btn-sm" @click="scrollToSection('#contacto')">
+                    <button
+                        type="button"
+                        class="btn btn-sm"
+                        @click="scrollToSection('#contacto')"
+                    >
                         Contacto
                     </button>
-                    <button type="button" class="login-link login-cta mobile-login" @click="openLoginModal">
+                    <Link
+                        v-if="isAuthenticated"
+                        :href="dashboardHref"
+                        class="login-link login-cta mobile-login"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Volver al panel
+                    </Link>
+                    <button
+                        v-else
+                        type="button"
+                        class="login-link login-cta mobile-login"
+                        @click="openLoginModal"
+                    >
                         Iniciar sesión
                     </button>
                 </div>
@@ -455,20 +535,36 @@ onBeforeUnmount(() => {
                             <span>Tu Negocio</span>
                         </h1>
                         <p>
-                            Deja atrás las hojas de cálculo y el desorden. Automatiza inventarios,
-                            ventas y facturación con una plataforma diseñada para escalar contigo.
+                            Deja atrás las hojas de cálculo y el desorden.
+                            Automatiza inventarios, ventas y facturación con una
+                            plataforma diseñada para escalar contigo.
                         </p>
                         <div class="hero-btns">
-                            <button type="button" class="btn" @click="scrollToSection('#contacto')">
+                            <button
+                                type="button"
+                                class="btn"
+                                @click="scrollToSection('#contacto')"
+                            >
                                 Solicitar Demo
                                 <Rocket class="btn-icon" />
                             </button>
-                            <button type="button" class="btn-outline" @click="scrollToSection('#soluciones')">
+                            <button
+                                type="button"
+                                class="btn-outline"
+                                @click="scrollToSection('#soluciones')"
+                            >
                                 Ver Soluciones
                             </button>
                         </div>
-                        <div class="hero-stats" aria-label="Resultados principales">
-                            <div v-for="stat in heroStats" :key="stat.label" class="hero-stat">
+                        <div
+                            class="hero-stats"
+                            aria-label="Resultados principales"
+                        >
+                            <div
+                                v-for="stat in heroStats"
+                                :key="stat.label"
+                                class="hero-stat"
+                            >
                                 <strong>{{ stat.value }}</strong>
                                 <span>{{ stat.label }}</span>
                             </div>
@@ -539,7 +635,7 @@ onBeforeUnmount(() => {
             </section>
 
             <section class="proof-strip" aria-label="Proceso de implementación">
-                <div class="container proof-grid">
+                <div class="proof-grid container">
                     <article
                         v-for="(step, index) in workflowSteps"
                         :key="step.title"
@@ -563,8 +659,8 @@ onBeforeUnmount(() => {
                         <span>Nuestros Servicios</span>
                         <h2>Soluciones para tu Negocio</h2>
                         <p>
-                            Sistemas especializados diseñados para las necesidades específicas de
-                            cada tipo de negocio.
+                            Sistemas especializados diseñados para las
+                            necesidades específicas de cada tipo de negocio.
                         </p>
                     </div>
 
@@ -573,10 +669,16 @@ onBeforeUnmount(() => {
                             v-for="(solution, index) in solutions"
                             :key="solution.key"
                             class="solution-card reveal"
-                            :class="[solution.key, `delay-${Math.min(index, 3)}`]"
+                            :class="[
+                                solution.key,
+                                `delay-${Math.min(index, 3)}`,
+                            ]"
                         >
                             <div class="solution-icon-wrapper">
-                                <component :is="solution.icon" class="card-icon" />
+                                <component
+                                    :is="solution.icon"
+                                    class="card-icon"
+                                />
                             </div>
                             <h3>{{ solution.title }}</h3>
                             <p>{{ solution.description }}</p>
@@ -598,7 +700,10 @@ onBeforeUnmount(() => {
                     <div class="section-title">
                         <span>Por qué elegirnos</span>
                         <h2>Beneficios Clave</h2>
-                        <p>Lo que nuestros sistemas pueden hacer por tu negocio.</p>
+                        <p>
+                            Lo que nuestros sistemas pueden hacer por tu
+                            negocio.
+                        </p>
                     </div>
 
                     <div class="features-list">
@@ -609,7 +714,10 @@ onBeforeUnmount(() => {
                             :class="`delay-${Math.min(index, 3)}`"
                         >
                             <div class="feature-icon">
-                                <component :is="feature.icon" class="feature-svg" />
+                                <component
+                                    :is="feature.icon"
+                                    class="feature-svg"
+                                />
                             </div>
                             <div class="feature-text">
                                 <h3>{{ feature.title }}</h3>
@@ -625,20 +733,33 @@ onBeforeUnmount(() => {
                     <div class="section-title">
                         <span>Portafolio</span>
                         <h2>Casos de Éxito</h2>
-                        <p>Algunos ejemplos de sistemas implementados para nuestros clientes.</p>
+                        <p>
+                            Algunos ejemplos de sistemas implementados para
+                            nuestros clientes.
+                        </p>
                     </div>
 
                     <div class="business-type-selector">
-                        <div class="business-type-buttons" role="list" aria-label="Filtrar casos de éxito">
+                        <div
+                            class="business-type-buttons"
+                            role="list"
+                            aria-label="Filtrar casos de éxito"
+                        >
                             <button
                                 v-for="filter in filters"
                                 :key="filter.value"
                                 type="button"
                                 class="filter-btn"
-                                :class="{ active: selectedFilter === filter.value }"
+                                :class="{
+                                    active: selectedFilter === filter.value,
+                                }"
                                 @click="selectedFilter = filter.value"
                             >
-                                <component v-if="filter.icon" :is="filter.icon" class="filter-icon" />
+                                <component
+                                    v-if="filter.icon"
+                                    :is="filter.icon"
+                                    class="filter-icon"
+                                />
                                 {{ filter.label }}
                             </button>
                         </div>
@@ -652,7 +773,10 @@ onBeforeUnmount(() => {
                         >
                             <div class="portfolio-img">
                                 <img :src="item.image" :alt="item.alt" />
-                                <span class="portfolio-category" :class="item.badgeClass">
+                                <span
+                                    class="portfolio-category"
+                                    :class="item.badgeClass"
+                                >
                                     {{ item.categoryLabel }}
                                 </span>
                             </div>
@@ -660,7 +784,10 @@ onBeforeUnmount(() => {
                                 <h3>{{ item.title }}</h3>
                                 <p>{{ item.description }}</p>
                                 <div class="portfolio-links">
-                                    <button type="button" @click="scrollToSection('#contacto')">
+                                    <button
+                                        type="button"
+                                        @click="scrollToSection('#contacto')"
+                                    >
                                         <Images class="inline-icon" />
                                         Ver capturas
                                     </button>
@@ -676,7 +803,10 @@ onBeforeUnmount(() => {
                     <div class="section-title">
                         <span>Testimonios</span>
                         <h2>Lo que dicen nuestros clientes</h2>
-                        <p>Testimonios de negocios que han transformado sus operaciones.</p>
+                        <p>
+                            Testimonios de negocios que han transformado sus
+                            operaciones.
+                        </p>
                     </div>
 
                     <div class="testimonials-grid">
@@ -690,7 +820,10 @@ onBeforeUnmount(() => {
                                 <p>{{ testimonial.quote }}</p>
                             </div>
                             <div class="testimonial-author">
-                                <img :src="testimonial.image" :alt="testimonial.name" />
+                                <img
+                                    :src="testimonial.image"
+                                    :alt="testimonial.name"
+                                />
                                 <div class="author-info">
                                     <h4>{{ testimonial.name }}</h4>
                                     <p>{{ testimonial.role }}</p>
@@ -721,7 +854,9 @@ onBeforeUnmount(() => {
                                     autocomplete="name"
                                     required
                                 />
-                                <p v-if="form.errors.name" class="form-error">{{ form.errors.name }}</p>
+                                <p v-if="form.errors.name" class="form-error">
+                                    {{ form.errors.name }}
+                                </p>
                             </div>
 
                             <div class="form-group">
@@ -734,7 +869,9 @@ onBeforeUnmount(() => {
                                     autocomplete="email"
                                     required
                                 />
-                                <p v-if="form.errors.email" class="form-error">{{ form.errors.email }}</p>
+                                <p v-if="form.errors.email" class="form-error">
+                                    {{ form.errors.email }}
+                                </p>
                             </div>
 
                             <div class="form-group">
@@ -747,11 +884,15 @@ onBeforeUnmount(() => {
                                     autocomplete="tel"
                                     required
                                 />
-                                <p v-if="form.errors.phone" class="form-error">{{ form.errors.phone }}</p>
+                                <p v-if="form.errors.phone" class="form-error">
+                                    {{ form.errors.phone }}
+                                </p>
                             </div>
 
                             <div class="form-group">
-                                <label for="business-type">Tipo de Negocio</label>
+                                <label for="business-type"
+                                    >Tipo de Negocio</label
+                                >
                                 <select
                                     id="business-type"
                                     v-model="form.business_type"
@@ -759,33 +900,57 @@ onBeforeUnmount(() => {
                                     required
                                 >
                                     <option value="">Seleccione...</option>
-                                    <option value="restaurante">Restaurante/Cafetería</option>
-                                    <option value="tienda">Tienda/Comercio</option>
+                                    <option value="restaurante">
+                                        Restaurante/Cafetería
+                                    </option>
+                                    <option value="tienda">
+                                        Tienda/Comercio
+                                    </option>
                                     <option value="farmacia">Farmacia</option>
-                                    <option value="ferreteria">Ferretería</option>
-                                    <option value="veterinaria">Clínica Veterinaria</option>
+                                    <option value="ferreteria">
+                                        Ferretería
+                                    </option>
+                                    <option value="veterinaria">
+                                        Clínica Veterinaria
+                                    </option>
                                     <option value="otro">Otro</option>
                                 </select>
-                                <p v-if="form.errors.business_type" class="form-error">
+                                <p
+                                    v-if="form.errors.business_type"
+                                    class="form-error"
+                                >
                                     {{ form.errors.business_type }}
                                 </p>
                             </div>
 
                             <div class="form-group">
-                                <label for="message">¿Qué desafíos enfrenta tu negocio?</label>
+                                <label for="message"
+                                    >¿Qué desafíos enfrenta tu negocio?</label
+                                >
                                 <textarea
                                     id="message"
                                     v-model="form.message"
                                     class="form-control"
                                     required
                                 ></textarea>
-                                <p v-if="form.errors.message" class="form-error">
+                                <p
+                                    v-if="form.errors.message"
+                                    class="form-error"
+                                >
                                     {{ form.errors.message }}
                                 </p>
                             </div>
 
-                            <button type="submit" class="btn submit-button" :disabled="form.processing">
-                                {{ form.processing ? 'Enviando...' : 'Solicitar Demostración' }}
+                            <button
+                                type="submit"
+                                class="btn submit-button"
+                                :disabled="form.processing"
+                            >
+                                {{
+                                    form.processing
+                                        ? 'Enviando...'
+                                        : 'Solicitar Demostración'
+                                }}
                             </button>
                         </form>
                     </div>
@@ -796,26 +961,42 @@ onBeforeUnmount(() => {
         <footer>
             <div class="container">
                 <div class="social-links">
-                    <button type="button" aria-label="WhatsApp" @click="scrollToSection('#contacto')">
+                    <button
+                        type="button"
+                        aria-label="WhatsApp"
+                        @click="scrollToSection('#contacto')"
+                    >
                         <MessageCircle class="social-icon" />
                     </button>
-                    <button type="button" aria-label="Facebook" @click="scrollToSection('#contacto')">
+                    <button
+                        type="button"
+                        aria-label="Facebook"
+                        @click="scrollToSection('#contacto')"
+                    >
                         <Facebook class="social-icon" />
                     </button>
-                    <button type="button" aria-label="Instagram" @click="scrollToSection('#contacto')">
+                    <button
+                        type="button"
+                        aria-label="Instagram"
+                        @click="scrollToSection('#contacto')"
+                    >
                         <Instagram class="social-icon" />
                     </button>
-                    <button type="button" aria-label="Email" @click="scrollToSection('#contacto')">
+                    <button
+                        type="button"
+                        aria-label="Email"
+                        @click="scrollToSection('#contacto')"
+                    >
                         <Mail class="social-icon" />
                     </button>
                 </div>
                 <p>
-                    &copy; {{ new Date().getFullYear() }} Soluciones Tecnológicas para Negocios.
-                    Todos los derechos reservados.
+                    &copy; {{ new Date().getFullYear() }} Soluciones
+                    Tecnológicas para Negocios. Todos los derechos reservados.
                 </p>
                 <p class="footer-note">
-                    Sistemas especializados para restaurantes, comercios, farmacias, ferreterías y
-                    veterinarias.
+                    Sistemas especializados para restaurantes, comercios,
+                    farmacias, ferreterías y veterinarias.
                 </p>
             </div>
         </footer>
@@ -897,8 +1078,16 @@ onBeforeUnmount(() => {
                         <span>Recordarme en este equipo</span>
                     </label>
 
-                    <button type="submit" class="btn submit-button" :disabled="loginForm.processing">
-                        {{ loginForm.processing ? 'Ingresando...' : 'Entrar al dashboard' }}
+                    <button
+                        type="submit"
+                        class="btn submit-button"
+                        :disabled="loginForm.processing"
+                    >
+                        {{
+                            loginForm.processing
+                                ? 'Ingresando...'
+                                : 'Entrar al dashboard'
+                        }}
                     </button>
                 </form>
             </section>
@@ -1169,7 +1358,11 @@ nav {
         linear-gradient(rgb(255 255 255 / 3%) 1px, transparent 1px),
         linear-gradient(90deg, rgb(255 255 255 / 3%) 1px, transparent 1px);
     background-size: 40px 40px;
-    mask-image: linear-gradient(to bottom, rgb(0 0 0 / 100%) 60%, rgb(0 0 0 / 0%));
+    mask-image: linear-gradient(
+        to bottom,
+        rgb(0 0 0 / 100%) 60%,
+        rgb(0 0 0 / 0%)
+    );
 }
 
 .hero-container {
@@ -1368,8 +1561,11 @@ nav {
 .hero-visual {
     position: relative;
     perspective: 1000px;
-    transform:
-        translate3d(calc(var(--pointer-x) * 8px), calc(var(--pointer-y) * 8px), 0)
+    transform: translate3d(
+            calc(var(--pointer-x) * 8px),
+            calc(var(--pointer-y) * 8px),
+            0
+        )
         rotateX(calc(var(--pointer-y) * -2deg))
         rotateY(calc(var(--pointer-x) * 2deg));
     transition: transform 0.18s ease-out;
@@ -2150,7 +2346,11 @@ textarea.form-control {
     align-items: center;
     justify-content: center;
     background:
-        radial-gradient(circle at 50% 10%, rgb(56 189 248 / 20%), transparent 34%),
+        radial-gradient(
+            circle at 50% 10%,
+            rgb(56 189 248 / 20%),
+            transparent 34%
+        ),
         rgb(2 6 23 / 72%);
     padding: 24px;
     backdrop-filter: blur(12px);

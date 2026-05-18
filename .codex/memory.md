@@ -94,6 +94,9 @@ Layout assignment is centralized in `resources/js/app.ts`:
   (sidebar, topbar/navbar, footer nav, breadcrumbs, and user menu).
 - Admin sidebar navigation lives in
   `resources/js/components/admin/AppSidebar.vue`.
+- Admin Roles is a working CRUD module under `/admin/roles`. The sidebar
+  should keep the Roles item active for nested create/edit routes. The `admin`
+  role name is protected because `role:admin` guards the panel.
 - Spatie permission middleware aliases (`role`, `permission`,
   `role_or_permission`) are registered centrally in `bootstrap/app.php`.
   The installed package uses the singular namespace
@@ -220,3 +223,15 @@ When adding a new admin feature, follow this local pattern:
   and role were valid, but stale Laravel route/cache data referenced Spatie's
   old plural `Middlewares` namespace. Cleared caches and moved permission
   middleware aliases from `routes/web.php` to `bootstrap/app.php`.
+- 2026-05-18: Pointed Fortify's post-login home directly to
+  `/admin/dashboard` and fixed the admin role pages' Vue/TypeScript errors
+  (`router` instead of the removed `Inertia` export, typed props/forms). This
+  restored `npm run build`, `npm run types:check`, and the Inertia login flow
+  from the public landing to `admin/dashboard/Index`.
+- 2026-05-18: Updated the public landing header/mobile menu so authenticated
+  users see `Volver al panel` linking to `/admin/dashboard` instead of opening
+  the login modal.
+- 2026-05-18: Completed the Roles admin CRUD UI. Reworked list/create/edit to
+  use admin UI components and typed Inertia props, validated permissions by
+  guard on the backend, protected the `admin` role from renaming/deletion, and
+  verified create/delete through the local HTTP routes.
