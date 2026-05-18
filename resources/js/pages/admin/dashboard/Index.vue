@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
+import { Users, TrendingUp, Globe } from 'lucide-vue-next';
 
 const {
     stats = { totalUsers: 0, newUsersThisMonth: 0, activeSessions: 0 },
@@ -21,19 +22,19 @@ const statCards = [
     {
         label: 'Total usuarios',
         value: stats.totalUsers,
-        icon: '👥',
+        icon: Users,
         description: 'usuarios registrados',
     },
     {
         label: 'Nuevos este mes',
         value: stats.newUsersThisMonth,
-        icon: '📈',
+        icon: TrendingUp,
         description: 'en los últimos 30 días',
     },
     {
         label: 'Sesiones activas',
         value: stats.activeSessions,
-        icon: '🌐',
+        icon: Globe,
         description: 'sesiones en este momento',
     },
 ];
@@ -62,7 +63,7 @@ const statCards = [
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
                         {{ stat.label }}
                     </p>
-                    <span class="text-2xl">{{ stat.icon }}</span>
+                    <component :is="stat.icon" class="h-5 w-5 text-gray-400" />
                 </div>
                 <p class="text-3xl font-bold text-gray-900 dark:text-white">
                     {{ stat.value }}
