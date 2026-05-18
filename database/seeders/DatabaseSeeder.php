@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,10 +14,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Usuario inicial para entrar al panel.
-        // Email: admin@admin.com
-        // Password: password
-        User::updateOrCreate(
+        // Roles y permisos iniciales.
+        $roles = ['admin', 'manager', 'user'];
+        foreach ($roles as $role) {
+            Role::firstOrCreate(['name' => $role]);
+        }
+
+        $permissions = ['view admin dashboard', 'manage users'];
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
+        Role::findByName('admin')->syncPermissions($permissions);
+        Role::findByName('manager')->syncPermissions(['view admin dashboard']);
+
+        $admin = User::updateOrCreate(
             ['email' => 'admin@admin.com'],
             [
                 'name' => 'Administrador',
@@ -23,5 +36,7 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ],
         );
+
+        $admin->assignRole('admin');
     }
 }

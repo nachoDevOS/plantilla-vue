@@ -4,6 +4,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Public\ContactController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
+use Spatie\Permission\Middlewares\RoleMiddleware;
+use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
 
 // Sitio publico
 
@@ -22,7 +25,11 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // Panel de administracion
 
-Route::middleware(['auth', 'verified'])
+Route::aliasMiddleware('role', RoleMiddleware::class);
+Route::aliasMiddleware('permission', PermissionMiddleware::class);
+Route::aliasMiddleware('role_or_permission', RoleOrPermissionMiddleware::class);
+
+Route::middleware(['auth', 'verified', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
