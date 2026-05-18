@@ -124,6 +124,25 @@ Layout admin:
 La pagina admin solo debe tener su contenido. Sidebar, header y estructura los
 pone el layout.
 
+El acceso al admin esta protegido con `role:admin`. Los alias de Spatie
+Permission se registran en `bootstrap/app.php`:
+
+- `role`
+- `permission`
+- `role_or_permission`
+
+La version instalada usa el namespace singular
+`Spatie\Permission\Middleware\...`. Si Laravel conserva una ruta cacheada con
+`Spatie\Permission\Middlewares\...`, el login puede funcionar pero la redireccion
+al dashboard falla. La solucion operativa es:
+
+```bash
+php artisan optimize:clear
+```
+
+El usuario inicial `admin@admin.com` debe tener password valido, email verificado
+y rol `admin`.
+
 Los componentes de sidebar, menu, navbar/topbar, footer nav, breadcrumbs y menu
 de usuario del admin estan organizados dentro de:
 

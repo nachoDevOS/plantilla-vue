@@ -4,9 +4,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Public\ContactController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Middleware\PermissionMiddleware;
-use Spatie\Permission\Middleware\RoleMiddleware;
-use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 // Sitio publico
 
@@ -25,10 +22,6 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // Panel de administracion
 
-Route::aliasMiddleware('role', RoleMiddleware::class);
-Route::aliasMiddleware('permission', PermissionMiddleware::class);
-Route::aliasMiddleware('role_or_permission', RoleOrPermissionMiddleware::class);
-
 Route::middleware(['auth', 'verified', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
@@ -43,7 +36,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::delete('roles/{role}', [\App\Http\Controllers\Admin\RoleController::class, 'destroy'])->name('roles.destroy');
     });
 
-// Redirige /dashboard a /admin/dashboard por compatibilidad con Fortify.
+// Redirige /dashboard a /admin/dashboard por compatibilidad con enlaces antiguos.
 Route::redirect('/dashboard', '/admin/dashboard');
 
 // Configuracion de usuario

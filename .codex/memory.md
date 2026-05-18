@@ -94,6 +94,12 @@ Layout assignment is centralized in `resources/js/app.ts`:
   (sidebar, topbar/navbar, footer nav, breadcrumbs, and user menu).
 - Admin sidebar navigation lives in
   `resources/js/components/admin/AppSidebar.vue`.
+- Spatie permission middleware aliases (`role`, `permission`,
+  `role_or_permission`) are registered centrally in `bootstrap/app.php`.
+  The installed package uses the singular namespace
+  `Spatie\Permission\Middleware\...`; stale cached routes that point to
+  `Spatie\Permission\Middlewares\...` break admin login redirects until
+  `php artisan optimize:clear` is run.
 - UI primitives live in `resources/js/components/ui/`.
 - Use `cn` from `resources/js/lib/utils.ts` for conditional Tailwind classes.
 - Flash toasts use this backend shape:
@@ -210,3 +216,7 @@ When adding a new admin feature, follow this local pattern:
   load until Vue marks `app-ready`, preventing unstyled black text from
   flashing during reloads. The dark loading background remains limited to the
   standalone landing (`public/Welcome`).
+- 2026-05-18: Diagnosed admin login redirect failure. The seeded admin user
+  and role were valid, but stale Laravel route/cache data referenced Spatie's
+  old plural `Middlewares` namespace. Cleared caches and moved permission
+  middleware aliases from `routes/web.php` to `bootstrap/app.php`.
